@@ -193,8 +193,14 @@ class Patmos(configFile: String, binFile: String, datFile: String) extends Modul
   val io = Config.getPatmosIO()
 
   // Instantiate core
-  val core = Module(new PatmosCore(binFile, datFile))
+  // val core = Module(new PatmosCore(binFile, datFile))
+  
+  def newPatmos(id: Int) = Module(new PatmosCore(binFile, datFile))
+  
+  val nrs = 0 to 2
+  val cores = nrs.map(x => newPatmos(x))
 
+  val core = cores(0)
   // Forward ports to/from core
   io.comConf <> core.io.comConf
   io.comSpm <> core.io.comSpm
